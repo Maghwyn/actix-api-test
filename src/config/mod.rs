@@ -21,9 +21,13 @@ impl EnvConfiguration {
 			app: AppConfig {
 				port: env::var("API_PORT").ok(),
 				env: env::var("NODE_ENV").ok(),
-				whitelist: serde_json::from_str(&env::var("API_WHITELIST")
-					.unwrap_or("[]".to_string()))
-					.unwrap_or_else(|_| vec![env::var("API_WHITELIST").unwrap_or_default()]),
+				whitelist: match serde_json::from_str(&env::var("API_WHITELIST").unwrap()) {
+					Ok(parsed_array) => parsed_array,
+					Err(err) => {
+						// Would result in undefined behavior or an unreliable state of the application
+						panic!("Error parsing API_WHITELIST as JSON: {}", err);
+					}
+				}
 			},
 			mongo: MongoConfig {
 				uri: env::var("MONGO_URI").ok(),
