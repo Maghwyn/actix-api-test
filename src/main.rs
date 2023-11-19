@@ -20,8 +20,8 @@ async fn manual_hello() -> impl Responder {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-	let configuration = config::get();
-	println!("{:?}", configuration);
+	let conf = config::get();
+	let binding_address = format!("[::1]:{}", &conf.app.port);
 
 	HttpServer::new(|| {
 		App::new()
@@ -29,7 +29,7 @@ async fn main() -> std::io::Result<()> {
 			.service(echo)
 			.route("/hey", web::get().to(manual_hello))
 	})
-	.bind(("127.0.0.1", 8080))?
+	.bind(binding_address)?
 	.run()
 	.await
 }
