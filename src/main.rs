@@ -3,6 +3,7 @@ extern crate serde_derive;
 use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
 
 mod config;
+mod cors;
 
 #[get("/")]
 async fn hello() -> impl Responder {
@@ -25,6 +26,7 @@ async fn main() -> std::io::Result<()> {
 
 	HttpServer::new(|| {
 		App::new()
+			.wrap(cors::options_delegate(conf.app.whitelist.clone()))
 			.service(hello)
 			.service(echo)
 			.route("/hey", web::get().to(manual_hello))
