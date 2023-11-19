@@ -9,6 +9,7 @@ pub fn env_validator() -> Result<(), Box<dyn Error>> {
 	dotenv()?;
 
 	let envs_to_check = [
+		"RUST_ENV",
 		"API_PORT",
 		"API_WHITELIST",
 		"MONGO_URI",
