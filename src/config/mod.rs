@@ -10,8 +10,6 @@ use self::config_validator::env_validator;
 
 impl EnvConfiguration {
 	pub fn load() -> Result<Self, Box<dyn Error>> {
-		println!("Load function is being called");
-
 		if let Err(err) = env_validator() {
 			// Would result in undefined behavior or an unreliable state of the application
 			panic!("Failed to validate environment variables: {}", err);
