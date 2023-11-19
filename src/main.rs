@@ -1,22 +1,25 @@
 extern crate serde_derive;
 
-use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
+use actix_web::{get, App, HttpResponse, HttpServer, Responder};
 
 mod config;
 mod cors;
+mod errors;
+
+use errors::http_errors::ServiceError;
 
 #[get("/")]
 async fn hello() -> impl Responder {
 	HttpResponse::Ok().body("Hello world!")
 }
 
-#[post("/echo")]
-async fn echo(req_body: String) -> impl Responder {
-	HttpResponse::Ok().body(req_body)
-}
+#[get("/test")]
+async fn echo() -> Result<impl Responder, ServiceError> {
+	if true {
+		return Err::<HttpResponse, ServiceError>(ServiceError::Forbidden("Some error message".to_string()))
+	}
 
-async fn manual_hello() -> impl Responder {
-	HttpResponse::Ok().body("Hey there!")
+	Ok(HttpResponse::Ok().body("Hey there!"))
 }
 
 #[actix_web::main]
@@ -29,7 +32,6 @@ async fn main() -> std::io::Result<()> {
 			.wrap(cors::options_delegate(conf.app.whitelist.clone()))
 			.service(hello)
 			.service(echo)
-			.route("/hey", web::get().to(manual_hello))
 	})
 	.bind(binding_address)?
 	.run()
