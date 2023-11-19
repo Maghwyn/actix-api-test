@@ -1,0 +1,13 @@
+version: '3.9'
+
+services:
+  mongo:
+    image: mongo
+    container_name: actix-api-mongo
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: test
+    ports:
+      - 27020:27017
+    volumes:
+      - ./data:/data/db
