@@ -1,4 +1,8 @@
+extern crate serde_derive;
+
 use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
+
+mod config;
 
 #[get("/")]
 async fn hello() -> impl Responder {
@@ -16,6 +20,9 @@ async fn manual_hello() -> impl Responder {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+	let configuration = config::get();
+	println!("{:?}", configuration);
+
 	HttpServer::new(|| {
 		App::new()
 			.service(hello)
