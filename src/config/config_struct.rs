@@ -7,25 +7,25 @@ pub struct EnvConfiguration {
 
 #[derive(Debug)]
 pub struct AppConfig {
-	pub port: Option<String>,
-	pub env: Option<String>,
+	pub port: String,
+	pub env: String,
 	pub whitelist: Vec<String>,
 }
 
 #[derive(Debug)]
 pub struct MongoConfig {
-	pub uri: Option<String>,
-	pub dbname: Option<String>,
+	pub uri: String,
+	pub dbname: String,
 }
 
 #[derive(Debug)]
 pub struct JwtConfig {
-	pub secret: Option<String>,
+	pub secret: String,
 	pub cookie: JwtCookieConfig,
 }
 
 #[derive(Debug)]
 pub struct JwtCookieConfig {
-	pub secure: Option<bool>,
-	pub samesite: Option<String>,
+	pub secure: bool,
+	pub samesite: String,
 }
