@@ -19,8 +19,8 @@ impl EnvConfiguration {
 
 		Ok(EnvConfiguration {
 			app: AppConfig {
-				port: env::var("API_PORT").ok(),
-				env: env::var("NODE_ENV").ok(),
+				port: env::var("API_PORT").unwrap(),
+				env: env::var("RUST_ENV").unwrap(),
 				whitelist: match serde_json::from_str(&env::var("API_WHITELIST").unwrap()) {
 					Ok(parsed_array) => parsed_array,
 					Err(err) => {
@@ -30,15 +30,14 @@ impl EnvConfiguration {
 				}
 			},
 			mongo: MongoConfig {
-				uri: env::var("MONGO_URI").ok(),
-				dbname: env::var("MONGO_DBNAME").ok(),
+				uri: env::var("MONGO_URI").unwrap(),
+				dbname: env::var("MONGO_DBNAME").unwrap(),
 			},
 			jwt: JwtConfig {
-				secret: env::var("JWT_SECRET").ok(),
+				secret: env::var("JWT_SECRET").unwrap(),
 				cookie: JwtCookieConfig {
-					secure: env::var("COOKIE_SECURE").ok()
-						.and_then(|s| s.parse().ok()),
-					samesite: env::var("COOKIE_SAMESITE").ok(),
+					secure: env::var("COOKIE_SECURE").unwrap().parse().unwrap(),
+					samesite: env::var("COOKIE_SAMESITE").unwrap(),
 				},
 			},
 		})
